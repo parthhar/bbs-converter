@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import mss
+
 from bbs_converter.utils.exceptions import CaptureError
 
 
@@ -29,11 +31,6 @@ def list_monitors() -> list[MonitorInfo]:
     CaptureError
         If no monitors can be detected.
     """
-    try:
-        import mss
-    except ImportError as exc:
-        raise CaptureError("mss library is required for screen capture") from exc
-
     with mss.mss() as sct:
         # sct.monitors[0] is the "all monitors" aggregate — skip it
         monitors = [

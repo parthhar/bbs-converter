@@ -17,8 +17,15 @@ def convert_table(state: TableState) -> BBState:
     Returns
     -------
     BBState
-        All values expressed in big blinds.
+        All values expressed in big blinds.  Returns zeroed-out
+        BBState when big_blind is zero (e.g. between hands).
     """
+    if state.big_blind <= 0:
+        return BBState(
+            pot_bb=0.0,
+            stacks_bb={name: 0.0 for name in state.stacks},
+        )
+
     pot_bb = chips_to_bb(state.pot, state.big_blind)
     stacks_bb = {
         name: chips_to_bb(stack, state.big_blind)

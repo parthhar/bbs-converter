@@ -37,3 +37,15 @@ class TestConvertTable:
         result = convert_table(state)
         assert result.pot_bb == pytest.approx(3.0)
         assert result.stacks_bb["Solo"] == pytest.approx(50.0)
+
+    def test_zero_big_blind_returns_zeroed_state(self) -> None:
+        """Regression: zero BB between hands must not crash."""
+        state = TableState(
+            big_blind=0.0,
+            small_blind=0.0,
+            pot=500.0,
+            stacks={"Alice": 3000.0},
+        )
+        result = convert_table(state)
+        assert result.pot_bb == 0.0
+        assert result.stacks_bb["Alice"] == 0.0

@@ -21,3 +21,17 @@ class BBState:
 
     pot_bb: float
     stacks_bb: dict[str, float] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class CaptureRegion:
+    """Screen region to capture, defined by top-left corner and size."""
+
+    x: int
+    y: int
+    width: int
+    height: int
+
+    def to_mss_monitor(self) -> dict[str, int]:
+        """Convert to the dict format expected by mss."""
+        return {"left": self.x, "top": self.y, "width": self.width, "height": self.height}

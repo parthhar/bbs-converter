@@ -35,3 +35,12 @@ class CaptureRegion:
     def to_mss_monitor(self) -> dict[str, int]:
         """Convert to the dict format expected by mss."""
         return {"left": self.x, "top": self.y, "width": self.width, "height": self.height}
+
+
+@dataclass(frozen=True)
+class PlayerInfo:
+    """Information about a single player at the table."""
+
+    name: str
+    seat: int
+    stack: float

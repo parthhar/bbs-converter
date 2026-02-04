@@ -44,3 +44,12 @@ class PlayerInfo:
     name: str
     seat: int
     stack: float
+
+
+@dataclass(frozen=True)
+class GameConfig:
+    """Blind structure and ante configuration for the current game."""
+
+    big_blind: float
+    small_blind: float
+    ante: float = 0.0

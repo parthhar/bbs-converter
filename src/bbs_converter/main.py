@@ -47,6 +47,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Capture region as 'x,y,width,height' (skips interactive selector)",
     )
     parser.add_argument(
+        "--delay",
+        type=int,
+        default=5,
+        metavar="SECONDS",
+        help="Ignored with interactive UI (kept for backwards compatibility)",
+    )
+    parser.add_argument(
         "--config",
         type=str,
         default=None,
@@ -82,7 +89,7 @@ def main(argv: list[str] | None = None) -> None:
     if args.region:
         region = _parse_region(args.region)
     else:
-        region = select_region()
+        region = select_region(delay=args.delay)
 
     _log.info(
         "Starting BBS Converter: region=%s fps=%d confidence=%.0f",
@@ -106,14 +113,27 @@ def main(argv: list[str] | None = None) -> None:
 
     orchestrator.start()
 
-    # Block until stopped
+    # Wait for user to be ready before starting the overlay.
+    print("\n  Pipeline is running (capture + OCR + conversion).")
+    print("  Switch to your poker window, then come back and press Enter to start the HUD.")
+    print("  Press Ctrl+C to quit.\n")
+
     try:
-        signal.pause()
-    except AttributeError:
-        # signal.pause() not available on Windows
-        import time
-        while orchestrator.running:
-            time.sleep(1)
+        input("  Press Enter to start overlay HUD...")
+    except (KeyboardInterrupt, EOFError):
+        _log.info("Interrupted before overlay, shutting down...")
+        orchestrator.stop()
+        return
+
+    print("  HUD starting — switch to your poker window now.\n")
+
+    # Run the overlay on the main thread (required on macOS for OpenCV GUI).
+    # This blocks until the stop event is set via signal handler.
+    try:
+        orchestrator.run_overlay()
+    except KeyboardInterrupt:
+        _log.info("Interrupted, shutting down...")
+        orchestrator.stop()
 
 
 if __name__ == "__main__":

@@ -48,7 +48,13 @@ class PipelineOrchestrator:
         self._overlay: OverlayLoop | None = None
 
     def start(self) -> None:
-        """Start all pipeline stages."""
+        """Start capture and processing stages.
+
+        The overlay is **not** started here.  Call :meth:`run_overlay` on
+        the main thread after ``start()`` to drive the GUI loop, or call
+        :meth:`start_overlay` to launch it in a background thread (not
+        supported on macOS).
+        """
         _log.info("Starting pipeline...")
         self._stop_event.clear()
 
@@ -61,13 +67,29 @@ class PipelineOrchestrator:
         )
         self._process_thread.start()
 
-        # Start overlay
         self._overlay = OverlayLoop(
             self._region, self._get_latest_state, refresh_hz=15
         )
-        self._overlay.start()
 
         _log.info("Pipeline running")
+
+    def run_overlay(self) -> None:
+        """Run the overlay loop on the calling thread (blocking).
+
+        Must be called from the main thread on macOS.
+        """
+        if self._overlay is None:
+            return
+        self._overlay.run_forever()
+
+    def start_overlay(self) -> None:
+        """Start the overlay in a background thread.
+
+        Not supported on macOS — use :meth:`run_overlay` instead.
+        """
+        if self._overlay is None:
+            return
+        self._overlay.start()
 
     def stop(self) -> None:
         """Stop all pipeline stages."""

@@ -43,13 +43,28 @@ class OverlayLoop:
         self._player_names: list[str] = []
 
     def start(self) -> None:
-        """Start the overlay refresh loop in a background thread."""
+        """Start the overlay refresh loop in a background thread.
+
+        Note: On macOS, OpenCV GUI calls must run on the main thread.
+        Use :meth:`run_forever` instead when the overlay needs to be
+        driven from the main thread.
+        """
         if self._thread is not None and self._thread.is_alive():
             return
         self._stop_event.clear()
         self._thread = threading.Thread(target=self._run, daemon=True)
         self._thread.start()
         _log.info("Overlay loop started at %.0f Hz", 1.0 / self._refresh_interval)
+
+    def run_forever(self) -> None:
+        """Run the overlay loop on the calling thread (blocking).
+
+        This is required on macOS where OpenCV window operations must
+        happen on the main thread.
+        """
+        self._stop_event.clear()
+        _log.info("Overlay loop started at %.0f Hz (main thread)", 1.0 / self._refresh_interval)
+        self._run()
 
     def stop(self, timeout: float = 2.0) -> None:
         """Stop the overlay refresh loop."""

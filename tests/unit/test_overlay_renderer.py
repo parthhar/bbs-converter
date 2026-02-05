@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-import sys
 from unittest.mock import MagicMock, patch
 
 import numpy as np
 
 from bbs_converter.models import BBState
+from bbs_converter.overlay.renderer import render_bb_values
 
 
 class TestRenderBBValues:
@@ -16,8 +16,7 @@ class TestRenderBBValues:
         cv2_mock.FONT_HERSHEY_SIMPLEX = 0
         cv2_mock.getTextSize.return_value = ((100, 20), 5)
 
-        with patch.dict(sys.modules, {"cv2": cv2_mock}):
-            from bbs_converter.overlay.renderer import render_bb_values
+        with patch("bbs_converter.overlay.renderer.cv2", cv2_mock):
             canvas = np.zeros((300, 400, 4), dtype=np.uint8)
             bb_state = BBState(pot_bb=3.5, stacks_bb={"Alice": 50.0, "Bob": 32.0})
             positions = {"Alice": (10, 100), "Bob": (10, 200)}
@@ -31,8 +30,7 @@ class TestRenderBBValues:
         cv2_mock.FONT_HERSHEY_SIMPLEX = 0
         cv2_mock.getTextSize.return_value = ((100, 20), 5)
 
-        with patch.dict(sys.modules, {"cv2": cv2_mock}):
-            from bbs_converter.overlay.renderer import render_bb_values
+        with patch("bbs_converter.overlay.renderer.cv2", cv2_mock):
             canvas = np.zeros((300, 400, 4), dtype=np.uint8)
             bb_state = BBState(pot_bb=0.0, stacks_bb={"Alice": 50.0})
             positions = {}  # no positions
@@ -45,8 +43,7 @@ class TestRenderBBValues:
         cv2_mock.FONT_HERSHEY_SIMPLEX = 0
         cv2_mock.getTextSize.return_value = ((100, 20), 5)
 
-        with patch.dict(sys.modules, {"cv2": cv2_mock}):
-            from bbs_converter.overlay.renderer import render_bb_values
+        with patch("bbs_converter.overlay.renderer.cv2", cv2_mock):
             canvas = np.zeros((300, 400, 4), dtype=np.uint8)
             bb_state = BBState(pot_bb=5.0, stacks_bb={})
             render_bb_values(canvas, bb_state, {})

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 import numpy as np
 
 from bbs_converter.models import CaptureRegion
@@ -26,7 +24,7 @@ class OverlayWindow:
 
     def __init__(self, region: CaptureRegion) -> None:
         self._region = region
-        self._canvas: Optional[np.ndarray] = None
+        self._canvas: np.ndarray | None = None
         self._open = False
 
     def open(self) -> None:

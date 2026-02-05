@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 import numpy as np
 
 from bbs_converter.ocr.cache import FrameDiffCache
@@ -41,7 +39,7 @@ class OCRPipeline:
         self._cache = FrameDiffCache() if use_cache else None
         self._confidence_threshold = confidence_threshold
 
-    def process(self, frame: np.ndarray) -> Optional[OCRResult]:
+    def process(self, frame: np.ndarray) -> OCRResult | None:
         """Run the full OCR pipeline on a captured frame.
 
         Parameters

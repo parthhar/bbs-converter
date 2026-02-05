@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Callable, Optional
+from collections.abc import Callable
 
 import numpy as np
 
@@ -15,7 +15,7 @@ _log = get_logger("capture.region_selector")
 
 
 def select_region(
-    on_frame: Optional[Callable[[np.ndarray], None]] = None,
+    on_frame: Callable[[np.ndarray], None] | None = None,
 ) -> CaptureRegion:
     """Launch an interactive region selector.
 

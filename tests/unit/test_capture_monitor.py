@@ -26,7 +26,10 @@ class TestListMonitors:
             monitors = list_monitors()
 
         assert len(monitors) == 2
-        assert monitors[0] == MonitorInfo(index=1, left=0, top=0, width=1920, height=1080)
+        expected = MonitorInfo(
+            index=1, left=0, top=0, width=1920, height=1080,
+        )
+        assert monitors[0] == expected
         assert monitors[1].left == 1920
 
     def test_no_monitors_raises(self) -> None:

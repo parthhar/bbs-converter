@@ -12,8 +12,8 @@ from pathlib import Path
 from typing import Any
 
 from bbs_converter.utils.constants import (
-    DEFAULT_CONFIG_FILENAME,
     DEFAULT_CONFIDENCE_THRESHOLD,
+    DEFAULT_CONFIG_FILENAME,
     DEFAULT_FPS,
 )
 from bbs_converter.utils.exceptions import ConfigError

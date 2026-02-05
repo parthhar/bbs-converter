@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import queue
-from typing import Optional
 
 import numpy as np
 
@@ -36,7 +35,7 @@ class FrameBuffer:
                 pass
             self._queue.put_nowait(frame)
 
-    def get(self, timeout: float | None = None) -> Optional[np.ndarray]:
+    def get(self, timeout: float | None = None) -> np.ndarray | None:
         """Retrieve the next frame, blocking up to *timeout* seconds.
 
         Returns ``None`` if no frame is available within the timeout.

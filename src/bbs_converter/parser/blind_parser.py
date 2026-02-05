@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import re
-from typing import Tuple
 
 _BLIND_PATTERN = re.compile(
     r"(?:blinds?|bl)\s*:?\s*"
@@ -14,7 +13,7 @@ _BLIND_PATTERN = re.compile(
 )
 
 
-def parse_blinds(text: str) -> Tuple[float, float] | None:
+def parse_blinds(text: str) -> tuple[float, float] | None:
     """Extract small blind and big blind from raw OCR text.
 
     Looks for patterns like ``Blinds: 50/100``, ``BL 25/50``,

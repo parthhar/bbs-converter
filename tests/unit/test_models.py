@@ -1,6 +1,12 @@
 """Tests for core data models."""
 
-from bbs_converter.models import BBState, CaptureRegion, GameConfig, PlayerInfo, TableState
+from bbs_converter.models import (
+    BBState,
+    CaptureRegion,
+    GameConfig,
+    PlayerInfo,
+    TableState,
+)
 
 
 class TestTableState:

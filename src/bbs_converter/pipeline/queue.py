@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import queue
-from typing import Generic, Optional, TypeVar
+from typing import Generic, TypeVar
 
 from bbs_converter.utils.constants import DEFAULT_QUEUE_MAXSIZE
 
@@ -39,7 +39,7 @@ class StageQueue(Generic[T]):
                 pass
             self._queue.put_nowait(item)
 
-    def get(self, timeout: float | None = None) -> Optional[T]:
+    def get(self, timeout: float | None = None) -> T | None:
         """Retrieve the next item, or None on timeout."""
         try:
             return self._queue.get(timeout=timeout)

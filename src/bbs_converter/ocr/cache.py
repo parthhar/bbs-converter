@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 import numpy as np
 
 from bbs_converter.ocr.engine import OCRResult
@@ -26,12 +24,12 @@ class FrameDiffCache:
 
     def __init__(self, diff_threshold: float = 5.0) -> None:
         self._threshold = diff_threshold
-        self._last_frame: Optional[np.ndarray] = None
-        self._last_result: Optional[OCRResult] = None
+        self._last_frame: np.ndarray | None = None
+        self._last_result: OCRResult | None = None
         self._hits = 0
         self._misses = 0
 
-    def get_if_unchanged(self, frame: np.ndarray) -> Optional[OCRResult]:
+    def get_if_unchanged(self, frame: np.ndarray) -> OCRResult | None:
         """Return the cached result if the frame hasn't changed.
 
         Parameters

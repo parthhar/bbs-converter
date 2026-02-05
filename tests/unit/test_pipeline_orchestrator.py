@@ -29,7 +29,10 @@ class TestPipelineOrchestrator:
         mock_grabber.__exit__ = MagicMock(return_value=False)
 
         with patch.dict(sys.modules, {"cv2": cv2_mock}):
-            with patch("bbs_converter.capture.thread.FrameGrabber", return_value=mock_grabber):
+            with patch(
+                "bbs_converter.capture.thread.FrameGrabber",
+                return_value=mock_grabber,
+            ):
                 from bbs_converter.pipeline.orchestrator import PipelineOrchestrator
                 orch = PipelineOrchestrator(self._make_region(), fps=100)
                 orch.start()

@@ -30,7 +30,10 @@ class TestTimed:
         with caplog.at_level(logging.DEBUG, logger="bbs_converter.timer"):
             noop()
 
-        assert any("noop" in record.message and "ms" in record.message for record in caplog.records)
+        assert any(
+            "noop" in record.message and "ms" in record.message
+            for record in caplog.records
+        )
 
     def test_propagates_exceptions(self) -> None:
         @timed

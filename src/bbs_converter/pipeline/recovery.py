@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 import time
-from typing import Callable, TypeVar
+from collections.abc import Callable
+from typing import TypeVar
 
-from bbs_converter.utils.constants import DEFAULT_RETRY_DELAY_SECONDS, DEFAULT_RETRY_LIMIT
+from bbs_converter.utils.constants import (
+    DEFAULT_RETRY_DELAY_SECONDS,
+    DEFAULT_RETRY_LIMIT,
+)
 from bbs_converter.utils.exceptions import PipelineError
 from bbs_converter.utils.logger import get_logger
 

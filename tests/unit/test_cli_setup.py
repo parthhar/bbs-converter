@@ -19,7 +19,10 @@ class TestSaveAndLoadRegion:
         setup_file = tmp_path / ".bbs_converter_setup.json"
         region = CaptureRegion(x=100, y=200, width=800, height=600)
 
-        with patch("bbs_converter.cli.setup_wizard._setup_path", return_value=setup_file):
+        with patch(
+            "bbs_converter.cli.setup_wizard._setup_path",
+            return_value=setup_file,
+        ):
             save_region(region)
             loaded = load_saved_region()
 
@@ -27,13 +30,19 @@ class TestSaveAndLoadRegion:
 
     def test_load_missing_file(self, tmp_path: Path) -> None:
         setup_file = tmp_path / "nonexistent.json"
-        with patch("bbs_converter.cli.setup_wizard._setup_path", return_value=setup_file):
+        with patch(
+            "bbs_converter.cli.setup_wizard._setup_path",
+            return_value=setup_file,
+        ):
             assert load_saved_region() is None
 
     def test_load_corrupted_file(self, tmp_path: Path) -> None:
         setup_file = tmp_path / ".bbs_converter_setup.json"
         setup_file.write_text("not json")
-        with patch("bbs_converter.cli.setup_wizard._setup_path", return_value=setup_file):
+        with patch(
+            "bbs_converter.cli.setup_wizard._setup_path",
+            return_value=setup_file,
+        ):
             assert load_saved_region() is None
 
 
@@ -45,7 +54,10 @@ class TestRunSetupWizard:
             "x": 10, "y": 20, "width": 300, "height": 400,
         }))
 
-        with patch("bbs_converter.cli.setup_wizard._setup_path", return_value=setup_file):
+        with patch(
+            "bbs_converter.cli.setup_wizard._setup_path",
+            return_value=setup_file,
+        ):
             result = run_setup_wizard(force=False)
 
         assert result == region
@@ -54,12 +66,22 @@ class TestRunSetupWizard:
         setup_file = tmp_path / ".bbs_converter_setup.json"
         new_region = CaptureRegion(x=50, y=50, width=500, height=500)
 
-        with patch("bbs_converter.cli.setup_wizard._setup_path", return_value=setup_file):
-            with patch("bbs_converter.cli.setup_wizard.select_region", return_value=new_region):
+        with patch(
+            "bbs_converter.cli.setup_wizard._setup_path",
+            return_value=setup_file,
+        ):
+            with patch(
+                "bbs_converter.cli.setup_wizard"
+                ".select_region",
+                return_value=new_region,
+            ):
                 result = run_setup_wizard(force=True)
 
         assert result == new_region
         # Verify it was saved
-        with patch("bbs_converter.cli.setup_wizard._setup_path", return_value=setup_file):
+        with patch(
+            "bbs_converter.cli.setup_wizard._setup_path",
+            return_value=setup_file,
+        ):
             loaded = load_saved_region()
         assert loaded == new_region

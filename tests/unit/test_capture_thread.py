@@ -26,8 +26,14 @@ class TestCaptureThread:
 
     def test_start_and_stop(self) -> None:
         buf = FrameBuffer(maxsize=5)
-        with patch("bbs_converter.capture.thread.FrameGrabber", return_value=self._mock_grabber()):
-            ct = CaptureThread(self._make_region(), buf, fps=100)
+        grabber = self._mock_grabber()
+        with patch(
+            "bbs_converter.capture.thread.FrameGrabber",
+            return_value=grabber,
+        ):
+            ct = CaptureThread(
+                self._make_region(), buf, fps=100,
+            )
             ct.start()
             assert ct.running is True
             time.sleep(0.05)
@@ -36,8 +42,14 @@ class TestCaptureThread:
 
     def test_produces_frames(self) -> None:
         buf = FrameBuffer(maxsize=10)
-        with patch("bbs_converter.capture.thread.FrameGrabber", return_value=self._mock_grabber()):
-            ct = CaptureThread(self._make_region(), buf, fps=100)
+        grabber = self._mock_grabber()
+        with patch(
+            "bbs_converter.capture.thread.FrameGrabber",
+            return_value=grabber,
+        ):
+            ct = CaptureThread(
+                self._make_region(), buf, fps=100,
+            )
             ct.start()
             time.sleep(0.1)
             ct.stop()
@@ -45,8 +57,14 @@ class TestCaptureThread:
 
     def test_double_start_is_safe(self) -> None:
         buf = FrameBuffer(maxsize=5)
-        with patch("bbs_converter.capture.thread.FrameGrabber", return_value=self._mock_grabber()):
-            ct = CaptureThread(self._make_region(), buf, fps=100)
+        grabber = self._mock_grabber()
+        with patch(
+            "bbs_converter.capture.thread.FrameGrabber",
+            return_value=grabber,
+        ):
+            ct = CaptureThread(
+                self._make_region(), buf, fps=100,
+            )
             ct.start()
             ct.start()  # should not create a second thread
             assert ct.running is True

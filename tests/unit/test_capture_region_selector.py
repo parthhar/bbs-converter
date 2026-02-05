@@ -42,9 +42,17 @@ class TestSelectRegion:
         cv2_mock = _setup_cv2_mock(roi=(100, 200, 300, 400))
         mss_mock = _setup_mss_mock()
 
-        with monitors_patch, patch.dict(sys.modules, {"cv2": cv2_mock, "mss": mss_mock}):
+        with (
+            monitors_patch,
+            patch.dict(
+                sys.modules,
+                {"cv2": cv2_mock, "mss": mss_mock},
+            ),
+        ):
             # Force re-import with mocked modules
-            from bbs_converter.capture.region_selector import select_region
+            from bbs_converter.capture.region_selector import (
+                select_region,
+            )
             region = select_region()
 
         assert isinstance(region, CaptureRegion)
@@ -61,9 +69,19 @@ class TestSelectRegion:
         cv2_mock = _setup_cv2_mock(roi=(100, 200, 0, 0))
         mss_mock = _setup_mss_mock()
 
-        with monitors_patch, patch.dict(sys.modules, {"cv2": cv2_mock, "mss": mss_mock}):
-            from bbs_converter.capture.region_selector import select_region
-            with pytest.raises(CaptureError, match="No region selected"):
+        with (
+            monitors_patch,
+            patch.dict(
+                sys.modules,
+                {"cv2": cv2_mock, "mss": mss_mock},
+            ),
+        ):
+            from bbs_converter.capture.region_selector import (
+                select_region,
+            )
+            with pytest.raises(
+                CaptureError, match="No region selected",
+            ):
                 select_region()
 
     def test_on_frame_callback(self) -> None:
@@ -75,8 +93,16 @@ class TestSelectRegion:
         cv2_mock = _setup_cv2_mock(roi=(10, 10, 50, 50))
         mss_mock = _setup_mss_mock()
 
-        with monitors_patch, patch.dict(sys.modules, {"cv2": cv2_mock, "mss": mss_mock}):
-            from bbs_converter.capture.region_selector import select_region
+        with (
+            monitors_patch,
+            patch.dict(
+                sys.modules,
+                {"cv2": cv2_mock, "mss": mss_mock},
+            ),
+        ):
+            from bbs_converter.capture.region_selector import (
+                select_region,
+            )
             select_region(on_frame=callback)
 
         callback.assert_called_once()

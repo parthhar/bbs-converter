@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Optional
 
 from bbs_converter.capture.region_selector import select_region
 from bbs_converter.models import CaptureRegion
@@ -20,7 +19,7 @@ def _setup_path() -> Path:
     return Path.home() / _SETUP_FILE
 
 
-def load_saved_region() -> Optional[CaptureRegion]:
+def load_saved_region() -> CaptureRegion | None:
     """Load a previously saved capture region, or None if not found."""
     path = _setup_path()
     if not path.exists():

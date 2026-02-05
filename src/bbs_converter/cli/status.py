@@ -4,8 +4,7 @@ from __future__ import annotations
 
 import sys
 import threading
-import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from bbs_converter.utils.logger import get_logger
 

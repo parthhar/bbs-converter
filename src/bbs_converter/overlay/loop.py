@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import threading
 import time
-from typing import Callable, Optional
+from collections.abc import Callable
 
 from bbs_converter.models import BBState, CaptureRegion
 from bbs_converter.overlay.colorizer import colorize_stacks
@@ -32,14 +32,14 @@ class OverlayLoop:
     def __init__(
         self,
         region: CaptureRegion,
-        get_state: Callable[[], Optional[BBState]],
+        get_state: Callable[[], BBState | None],
         refresh_hz: int = 15,
     ) -> None:
         self._region = region
         self._get_state = get_state
         self._refresh_interval = 1.0 / refresh_hz
         self._stop_event = threading.Event()
-        self._thread: Optional[threading.Thread] = None
+        self._thread: threading.Thread | None = None
         self._player_names: list[str] = []
 
     def start(self) -> None:
